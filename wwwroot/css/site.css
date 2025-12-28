@@ -1,0 +1,166 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+  background-color: #f8f9fa;
+}
+
+/* Estilos personalizados para CinemaGabriel */
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.card-img-top {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.btn-gap {
+  gap: 0.5rem;
+}
+
+.card {
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para badges */
+.badge {
+  font-size: 0.85rem;
+  padding: 0.35em 0.65em;
+}
+
+/* Alertas */
+.alert {
+  border-radius: 0.5rem;
+}
+
+/* Tabelas responsivas */
+.table-responsive {
+  margin-bottom: 1rem;
+}
+
+/* Imagens de filmes */
+.filme-capa {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+/* Loading spinner (opcional) */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Formulários */
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Botões */
+.btn {
+  border-radius: 0.375rem;
+  font-weight: 500;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Cards de filme */
+.card-film {
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.card-film:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Espaçamentos */
+.mt-6 {
+  margin-top: 4rem !important;
+}
+
+.mb-6 {
+  margin-bottom: 4rem !important;
+}
+
+/* Navbar dark personalizado */
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+/* Validação */
+.text-danger {
+  font-size: 0.875em;
+  margin-top: 0.25rem;
+}
+
+/* Estado desabilitado */
+.disabled, :disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsividade extra */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+}

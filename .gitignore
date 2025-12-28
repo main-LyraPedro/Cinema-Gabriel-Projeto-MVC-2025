@@ -1,0 +1,19 @@
+# Visual Studio
+.vs/
+
+# Build
+bin/
+obj/
+
+# Banco local
+*.db
+
+# Logs
+*.log
+
+# Arquivos de usuário
+*.user
+*.suo
+
+# Uploads (opcional)
+wwwroot/uploads/

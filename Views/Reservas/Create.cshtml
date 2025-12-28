@@ -1,0 +1,81 @@
+@model CinemaGabriel.ViewModels.ReservaViewModel
+
+@{
+    ViewData["Title"] = "Confirmar Reserva";
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Sessoes" asp-action="Index">Sessões</a></li>
+            <li class="breadcrumb-item active">Confirmar Reserva</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0"><i class="bi bi-ticket-perforated"></i> Confirmar Reserva</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            @if (!string.IsNullOrEmpty(Model.FilmeCapa))
+                            {
+                                <img src="@Model.FilmeCapa" class="img-fluid rounded shadow" alt="@Model.FilmeTitulo">
+                            }
+                            else
+                            {
+                                <div class="bg-secondary d-flex align-items-center justify-content-center text-white rounded" style="height: 300px;">
+                                    <i class="bi bi-film" style="font-size: 5rem;"></i>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="col-md-8">
+                            <h3 class="mb-4">@Model.FilmeTitulo</h3>
+                            
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle"></i>
+                                <strong>Atenção:</strong> Confirme os dados da sua reserva antes de prosseguir.
+                            </div>
+
+                            <dl class="row">
+                                <dt class="col-sm-4"><i class="bi bi-clock"></i> Horário:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge bg-primary fs-6">
+                                        @Model.SessaoHorario?.ToString("dd/MM/yyyy HH:mm")
+                                    </span>
+                                </dd>
+
+                                <dt class="col-sm-4"><i class="bi bi-door-open"></i> Sala:</dt>
+                                <dd class="col-sm-8">@Model.SessaoSala</dd>
+
+                                <dt class="col-sm-4"><i class="bi bi-cash"></i> Preço:</dt>
+                                <dd class="col-sm-8">
+                                    <strong class="text-success fs-4">@Model.SessaoPreco?.ToString("C")</strong>
+                                </dd>
+                            </dl>
+
+                            <hr class="my-4">
+
+                            <form asp-action="Create" method="post">
+                                <input type="hidden" asp-for="SessaoId" />
+                                
+                                <div class="d-flex gap-2 justify-content-end">
+                                    <a asp-controller="Sessoes" asp-action="Details" asp-route-id="@Model.SessaoId" class="btn btn-secondary">
+                                        <i class="bi bi-arrow-left"></i> Voltar
+                                    </a>
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        <i class="bi bi-check-circle"></i> Confirmar Reserva
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

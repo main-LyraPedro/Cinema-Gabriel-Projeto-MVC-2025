@@ -1,0 +1,155 @@
+@model IEnumerable<CinemaGabriel.Models.Sessao>
+
+@{
+    ViewData["Title"] = "Sessões";
+    var filmes = ViewBag.Filmes as List<CinemaGabriel.Models.Filme>;
+    var filmeSelecionado = ViewBag.FilmeSelecionado as CinemaGabriel.Models.Filme;
+    var dataSelecionada = ViewBag.DataSelecionada as DateTime?;
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5">
+            <i class="bi bi-calendar-event"></i> Sessões de Cinema
+        </h1>
+        
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Create" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Adicionar Sessão
+            </a>
+        }
+    </div>
+
+    @if (TempData["Sucesso"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i> @TempData["Sucesso"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Filtros -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-5">
+                    <label class="form-label"><i class="bi bi-film"></i> Filtrar por Filme</label>
+                    <select name="filmeId" class="form-select" onchange="this.form.submit()">
+                        <option value="">Todos os filmes</option>
+                        @if (filmes != null)
+                        {
+                            @foreach (var filme in filmes)
+                            {
+                                <option value="@filme.Id" selected="@(filmeSelecionado?.Id == filme.Id)">
+                                    @filme.Titulo
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+                
+                <div class="col-md-5">
+                    <label class="form-label"><i class="bi bi-calendar"></i> Filtrar por Data</label>
+                    <input type="date" name="data" class="form-select" value="@dataSelecionada?.ToString("yyyy-MM-dd")" onchange="this.form.submit()" />
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end">
+                    <a asp-action="Index" class="btn btn-secondary w-100">
+                        <i class="bi bi-x-circle"></i> Limpar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (filmeSelecionado != null)
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-funnel"></i> Exibindo sessões do filme: <strong>@filmeSelecionado.Titulo</strong>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle"></i> Nenhuma sessão encontrada.
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var sessao in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        @if (!string.IsNullOrEmpty(sessao.Filme?.CaminhoImagem))
+                        {
+                            <img src="@sessao.Filme.CaminhoImagem" class="card-img-top" alt="@sessao.Filme.Titulo" style="height: 200px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center text-white" style="height: 200px;">
+                                <i class="bi bi-film" style="font-size: 4rem;"></i>
+                            </div>
+                        }
+                        
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@sessao.Filme?.Titulo</h5>
+                            
+                            <div class="mb-2">
+                                <span class="badge bg-primary">
+                                    <i class="bi bi-clock"></i> @sessao.Horario.ToString("dd/MM/yyyy HH:mm")
+                                </span>
+                            </div>
+                            
+                            <p class="card-text mb-1">
+                                <i class="bi bi-door-open"></i> <strong>Sala:</strong> @sessao.Sala
+                            </p>
+                            <p class="card-text mb-1">
+                                <i class="bi bi-cash"></i> <strong>Preço:</strong> @sessao.Preco.ToString("C")
+                            </p>
+                            <p class="card-text mb-auto">
+                                <i class="bi bi-ticket-perforated"></i> <strong>Reservas:</strong> @sessao.Reservas.Count
+                            </p>
+                            
+                            <div class="mt-3 d-flex gap-2">
+                                <a asp-action="Details" asp-route-id="@sessao.Id" class="btn btn-sm btn-outline-primary flex-fill">
+                                    <i class="bi bi-eye"></i> Detalhes
+                                </a>
+                                
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@sessao.Id" class="btn btn-sm btn-outline-warning">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@sessao.Id" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Reservas" asp-action="Create" asp-route-sessaoId="@sessao.Id" class="btn btn-sm btn-success">
+                                        <i class="bi bi-ticket"></i> Reservar
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                var bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    </script>
+}

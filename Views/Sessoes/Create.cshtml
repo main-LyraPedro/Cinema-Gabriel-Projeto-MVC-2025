@@ -1,0 +1,79 @@
+@model CinemaGabriel.ViewModels.SessaoViewModel
+
+@{
+    ViewData["Title"] = "Adicionar Sessão";
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">Sessões</a></li>
+            <li class="breadcrumb-item active">Adicionar</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0"><i class="bi bi-plus-circle"></i> Adicionar Nova Sessão</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="FilmeId" class="form-label"></label>
+                            <select asp-for="FilmeId" class="form-select" asp-items="ViewBag.Filmes">
+                                <option value="">-- Selecione um filme --</option>
+                            </select>
+                            <span asp-validation-for="FilmeId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Horario" class="form-label"></label>
+                            <input asp-for="Horario" class="form-control" type="datetime-local" />
+                            <span asp-validation-for="Horario" class="text-danger"></span>
+                            <div class="form-text">Selecione a data e hora da sessão</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Sala" class="form-label"></label>
+                            <input asp-for="Sala" class="form-control" placeholder="Ex: Sala 1" list="salas" />
+                            <datalist id="salas">
+                                <option value="Sala 1"></option>
+                                <option value="Sala 2"></option>
+                                <option value="Sala 3"></option>
+                                <option value="Sala VIP"></option>
+                                <option value="Sala IMAX"></option>
+                            </datalist>
+                            <span asp-validation-for="Sala" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Preco" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text">€</span>
+                                <input asp-for="Preco" class="form-control" type="number" step="0.01" placeholder="7.50" />
+                            </div>
+                            <span asp-validation-for="Preco" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-save"></i> Guardar
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

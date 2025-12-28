@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Acesso Negado";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <i class="bi bi-shield-x text-danger" style="font-size: 5rem;"></i>
+                    <h1 class="display-4 mt-3">Acesso Negado</h1>
+                    <p class="lead text-muted">Não tem permissões para aceder a esta página.</p>
+                    <hr>
+                    <p>Esta funcionalidade está restrita a administradores do sistema.</p>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                        <i class="bi bi-house"></i> Voltar à Página Inicial
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

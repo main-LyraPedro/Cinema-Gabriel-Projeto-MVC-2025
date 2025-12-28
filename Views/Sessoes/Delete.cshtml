@@ -1,0 +1,89 @@
+@model CinemaGabriel.Models.Sessao
+
+@{
+    ViewData["Title"] = "Eliminar Sessão";
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">Sessões</a></li>
+            <li class="breadcrumb-item active">Eliminar</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Confirmar Eliminação de Sessão</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <strong>Atenção!</strong> Esta ação é irreversível. Tem a certeza que deseja eliminar esta sessão?
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            @if (!string.IsNullOrEmpty(Model.Filme?.CaminhoImagem))
+                            {
+                                <img src="@Model.Filme.CaminhoImagem" class="img-fluid rounded shadow" alt="@Model.Filme.Titulo">
+                            }
+                            else
+                            {
+                                <div class="bg-secondary d-flex align-items-center justify-content-center text-white rounded" style="height: 250px;">
+                                    <i class="bi bi-film" style="font-size: 5rem;"></i>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="col-md-8">
+                            <h3 class="mb-3">@Model.Filme?.Titulo</h3>
+                            
+                            <dl class="row">
+                                <dt class="col-sm-4"><i class="bi bi-clock"></i> Horário:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge bg-primary">
+                                        @Model.Horario.ToString("dd/MM/yyyy HH:mm")
+                                    </span>
+                                </dd>
+
+                                <dt class="col-sm-4"><i class="bi bi-door-open"></i> Sala:</dt>
+                                <dd class="col-sm-8">@Model.Sala</dd>
+
+                                <dt class="col-sm-4"><i class="bi bi-cash"></i> Preço:</dt>
+                                <dd class="col-sm-8">@Model.Preco.ToString("C")</dd>
+
+                                <dt class="col-sm-4"><i class="bi bi-ticket-perforated"></i> Reservas:</dt>
+                                <dd class="col-sm-8">
+                                    @Model.Reservas.Count
+                                    @if (Model.Reservas.Any())
+                                    {
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="bi bi-exclamation-circle"></i> Serão eliminadas também!
+                                        </span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex gap-2 justify-content-end">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Sim, Eliminar Sessão
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

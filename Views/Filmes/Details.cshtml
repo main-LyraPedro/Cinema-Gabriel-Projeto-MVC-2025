@@ -1,0 +1,113 @@
+@model CinemaGabriel.Models.Filme
+
+@{
+    ViewData["Title"] = "Detalhes do Filme";
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">Filmes</a></li>
+            <li class="breadcrumb-item active">@Model.Titulo</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-4">
+            @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
+            {
+                <img src="@Model.CaminhoImagem" class="img-fluid rounded shadow" alt="@Model.Titulo">
+            }
+            else
+            {
+                <div class="bg-secondary d-flex align-items-center justify-content-center text-white rounded shadow" style="height: 400px;">
+                    <i class="bi bi-film" style="font-size: 8rem;"></i>
+                </div>
+            }
+        </div>
+
+        <div class="col-md-8">
+            <h1 class="display-4 mb-3">@Model.Titulo</h1>
+            
+            <div class="mb-4">
+                <span class="badge bg-primary fs-6 me-2">
+                    <i class="bi bi-tag"></i> @Model.Genero
+                </span>
+                <span class="badge bg-secondary fs-6">
+                    <i class="bi bi-clock"></i> @Model.Duracao minutos
+                </span>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-text-paragraph"></i> Sinopse</h5>
+                    <p class="card-text">
+                        @if (!string.IsNullOrEmpty(Model.Sinopse))
+                        {
+                            @Model.Sinopse
+                        }
+                        else
+                        {
+                            <span class="text-muted">Sinopse não disponível.</span>
+                        }
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-calendar"></i> Informações de Cadastro</h5>
+                    <p class="card-text">
+                        <strong>Data de Cadastro:</strong> @Model.DataCadastro.ToString("dd/MM/yyyy HH:mm")
+                    </p>
+                    <p class="card-text">
+                        <strong>Sessões Disponíveis:</strong> @Model.Sessoes.Count
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                        <i class="bi bi-pencil"></i> Editar
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Eliminar
+                    </a>
+                }
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Voltar à Lista
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Sessoes.Any())
+    {
+        <hr class="my-5">
+        <h3 class="mb-4"><i class="bi bi-calendar-event"></i> Sessões Disponíveis</h3>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+            @foreach (var sessao in Model.Sessoes.OrderBy(s => s.Horario))
+            {
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@sessao.Horario.ToString("dd/MM/yyyy HH:mm")</h5>
+                            <p class="card-text">
+                                <i class="bi bi-door-open"></i> Sala: @sessao.Sala<br>
+                                <i class="bi bi-cash"></i> Preço: @sessao.Preco.ToString("C")
+                            </p>
+                            @if (User.IsInRole("Cliente"))
+                            {
+                                <a asp-controller="Reservas" asp-action="Create" asp-route-sessaoId="@sessao.Id" class="btn btn-sm btn-success">
+                                    <i class="bi bi-ticket"></i> Reservar
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

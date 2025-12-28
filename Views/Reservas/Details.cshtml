@@ -1,0 +1,119 @@
+@model CinemaGabriel.Models.Reserva
+
+@{
+    ViewData["Title"] = "Detalhes da Reserva";
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">Reservas</a></li>
+            <li class="breadcrumb-item active">Detalhes</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-4">
+            @if (!string.IsNullOrEmpty(Model.Sessao?.Filme?.CaminhoImagem))
+            {
+                <img src="@Model.Sessao.Filme.CaminhoImagem" class="img-fluid rounded shadow" alt="@Model.Sessao.Filme.Titulo">
+            }
+            else
+            {
+                <div class="bg-secondary d-flex align-items-center justify-content-center text-white rounded shadow" style="height: 400px;">
+                    <i class="bi bi-film" style="font-size: 8rem;"></i>
+                </div>
+            }
+        </div>
+
+        <div class="col-md-8">
+            <h1 class="display-5 mb-3">@Model.Sessao?.Filme?.Titulo</h1>
+            
+            @{
+                var sessaoPassou = Model.Sessao?.Horario <= DateTime.Now;
+            }
+
+            @if (sessaoPassou)
+            {
+                <span class="badge bg-secondary fs-6 mb-3">
+                    <i class="bi bi-check-circle"></i> Sessão Realizada
+                </span>
+            }
+            else
+            {
+                <span class="badge bg-success fs-6 mb-3">
+                    <i class="bi bi-check-circle"></i> Reserva Ativa
+                </span>
+            }
+
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-ticket-perforated"></i> Informações da Reserva</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4"><i class="bi bi-calendar"></i> Reservado em:</dt>
+                        <dd class="col-sm-8">@Model.DataReserva.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-4"><i class="bi bi-clock"></i> Horário da Sessão:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-primary fs-6">
+                                @Model.Sessao?.Horario.ToString("dd/MM/yyyy HH:mm")
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4"><i class="bi bi-door-open"></i> Sala:</dt>
+                        <dd class="col-sm-8">@Model.Sessao?.Sala</dd>
+
+                        <dt class="col-sm-4"><i class="bi bi-cash"></i> Preço:</dt>
+                        <dd class="col-sm-8">
+                            <strong class="text-success fs-5">@Model.Sessao?.Preco.ToString("C")</strong>
+                        </dd>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <dt class="col-sm-4"><i class="bi bi-person"></i> Cliente:</dt>
+                            <dd class="col-sm-8">
+                                @Model.User?.NomeCompleto<br>
+                                <small class="text-muted">@Model.User?.Email</small>
+                            </dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0"><i class="bi bi-film"></i> Informações do Filme</h5>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2">
+                        <i class="bi bi-tag"></i> <strong>Género:</strong> @Model.Sessao?.Filme?.Genero
+                    </p>
+                    <p class="mb-2">
+                        <i class="bi bi-clock"></i> <strong>Duração:</strong> @Model.Sessao?.Filme?.Duracao minutos
+                    </p>
+                    @if (!string.IsNullOrEmpty(Model.Sessao?.Filme?.Sinopse))
+                    {
+                        <hr>
+                        <p class="mb-0"><strong>Sinopse:</strong></p>
+                        <p class="text-muted">@Model.Sessao.Filme.Sinopse</p>
+                    }
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                @if (!sessaoPassou || User.IsInRole("Admin"))
+                {
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                        <i class="bi bi-x-circle"></i> Cancelar Reserva
+                    </a>
+                }
+                
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Voltar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

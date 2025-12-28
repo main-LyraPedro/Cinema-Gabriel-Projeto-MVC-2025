@@ -1,0 +1,81 @@
+@{
+    ViewData["Title"] = "Bem-vindo";
+}
+
+<div class="container">
+    <div class="px-4 py-5 my-5 text-center">
+        <i class="bi bi-film display-1 text-primary mb-4"></i>
+        <h1 class="display-5 fw-bold">Sistema de Gestão de Cinema</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">
+                Bem-vindo ao sistema de gestão de cinema. Aqui pode consultar filmes, 
+                sessões disponíveis e fazer reservas de forma simples e rápida.
+            </p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a asp-controller="Filmes" asp-action="Index" class="btn btn-primary btn-lg px-4 gap-3">
+                        <i class="bi bi-film"></i> Ver Filmes
+                    </a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Filmes" asp-action="Create" class="btn btn-success btn-lg px-4">
+                            <i class="bi bi-plus-circle"></i> Adicionar Filme
+                        </a>
+                    }
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-lg px-4 gap-3">
+                        <i class="bi bi-box-arrow-in-right"></i> Entrar
+                    </a>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-outline-secondary btn-lg px-4">
+                        <i class="bi bi-person-plus"></i> Registar
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+            <div class="col d-flex align-items-start">
+                <div class="icon-square text-primary bg-light d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3" style="width: 3rem; height: 3rem; border-radius: 0.5rem;">
+                    <i class="bi bi-film"></i>
+                </div>
+                <div>
+                    <h3 class="fs-2">Catálogo de Filmes</h3>
+                    <p>Consulte todos os filmes disponíveis em cartaz com detalhes completos.</p>
+                    <a asp-controller="Filmes" asp-action="Index" class="btn btn-outline-primary">
+                        Ver Filmes <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <div class="icon-square text-success bg-light d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3" style="width: 3rem; height: 3rem; border-radius: 0.5rem;">
+                    <i class="bi bi-calendar-event"></i>
+                </div>
+                <div>
+                    <h3 class="fs-2">Sessões</h3>
+                    <p>Confira os horários disponíveis e escolha a melhor sessão para você.</p>
+                    <a asp-controller="Sessoes" asp-action="Index" class="btn btn-outline-success">
+                        Ver Sessões <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <div class="icon-square text-warning bg-light d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3" style="width: 3rem; height: 3rem; border-radius: 0.5rem;">
+                    <i class="bi bi-ticket-perforated"></i>
+                </div>
+                <div>
+                    <h3 class="fs-2">Minhas Reservas</h3>
+                    <p>Gerencie suas reservas e acompanhe o histórico de ingressos.</p>
+                    <a asp-controller="Reservas" asp-action="Index" class="btn btn-outline-warning">
+                        Ver Reservas <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
